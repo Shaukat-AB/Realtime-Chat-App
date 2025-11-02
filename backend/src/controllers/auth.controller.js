@@ -1,6 +1,6 @@
-import { genSalt, hash } from "bcryptjs";
+import { compare, genSalt, hash } from "bcryptjs";
 import User from "../models/user.model.js";
-import { genToken } from "../lib/utils/utils.js";
+import { cookieName, genToken } from "../lib/utils/utils.js";
 
 export const signup = async (req, res) => {
     const { email, fullname, password, avatar } = req.body;
@@ -8,19 +8,19 @@ export const signup = async (req, res) => {
 
     try {
         if (!email || !fullname || !password) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: "Email, Fullname, Password are required",
             });
         }
         if (password.length < PASSWORD_LEN) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: "Password must be 6 or more characters",
             });
         }
 
         const user = await User.findOne({ email });
         if (user) {
-            res.status(400).json({ message: "Email already exists" });
+            return res.status(400).json({ message: "Email already exists" });
         }
 
         const salt = await genSalt(10);
@@ -35,6 +35,7 @@ export const signup = async (req, res) => {
 
         if (newUser) {
             genToken(newUser._id, res);
+
             await newUser.save();
             res.status(201).json({
                 _id: newUser._id,
@@ -51,10 +52,40 @@ export const signup = async (req, res) => {
     }
 };
 
-export const signin = (req, res) => {
-    res.send("signin route");
+export const signin = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const isPasswordCorrect = await compare(password, user.password);
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        genToken(user._id, res);
+
+        res.status(200).json({
+            _id: user._id,
+            email: user.email,
+            fullname: user.fullname,
+            avatar: user.avatar,
+        });
+    } catch (err) {
+        console.log("Signin auth.controller error: ", err.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
 };
 
 export const signout = (req, res) => {
-    res.send("signout route");
+    try {
+        res.cookie(cookieName, "", { maxAge: 0 });
+        res.status(200).json({ message: "Sign out successfully" });
+    } catch (err) {
+        console.log("Signout auth.controller error: ", err.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
 };
