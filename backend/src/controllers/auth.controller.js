@@ -112,3 +112,12 @@ export const updateProfile = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const verifyAuth = (req, res) => {
+    try {
+        res.status(200).json(req.user);
+    } catch (err) {
+        console.log("VerifyAuth auth.controller error: ", err.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
