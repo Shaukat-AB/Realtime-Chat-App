@@ -1,6 +1,7 @@
 import { compare, genSalt, hash } from "bcryptjs";
 import User from "../models/user.model.js";
 import { cookieName, genToken } from "../lib/utils/utils.js";
+import cloudinary from "../lib/cloudinary/cloudinary.js";
 
 export const signup = async (req, res) => {
     const { email, fullname, password, avatar } = req.body;
@@ -86,6 +87,28 @@ export const signout = (req, res) => {
         res.status(200).json({ message: "Sign out successfully" });
     } catch (err) {
         console.log("Signout auth.controller error: ", err.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const updateProfile = async (req, res) => {
+    try {
+        const { avatar } = req.body;
+        const userId = req.user._id;
+        if (!avatar) {
+            return res.status(400).json({ message: "User avatar required" });
+        }
+        const uploaded = await cloudinary.uploader.upload(avatar);
+        const updatedUser = User.findByIdAndUpdate(
+            userId,
+            {
+                avatar: uploaded.secure_url,
+            },
+            { new: true }
+        );
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        console.log("UpdateProfile auth.controller error: ", err.message);
         res.status(500).json({ message: "Internal server error" });
     }
 };
