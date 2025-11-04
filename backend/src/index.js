@@ -10,11 +10,17 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT;
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+    cors({
+        origin: CORS_ORIGIN,
+        credentials: true,
+    })
+);
 
 // Routes
 app.use("/api/auth", authRoutes);
