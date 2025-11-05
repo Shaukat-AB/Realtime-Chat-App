@@ -13,7 +13,7 @@ const PORT = process.env.PORT;
 const CORS_ORIGIN = process.env.CORS_ORIGIN;
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use(
     cors({
