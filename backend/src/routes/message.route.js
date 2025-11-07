@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get("/users", protectRoute, getUserContacts);
+router.get("/user-contacts", protectRoute, getUserContacts);
 router.get("/:id", protectRoute, getMessagesById);
 router.post("/send/:id", protectRoute, sendMessage);
 
