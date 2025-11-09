@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { NavBar } from "./components";
 import { HomePage, ProfilePage, SigninPage, SignupPage } from "./pages";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
     return (
@@ -12,6 +13,7 @@ const App = () => {
                 <Route path="/signin" element={<SigninPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
             </Routes>
+            <Toaster />
         </div>
     );
 };
