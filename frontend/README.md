@@ -1,18 +1,23 @@
-# React + Vite
+# Realtime Chat App(Frontend)
+A responsive frontend for a real-time chat application built with React and modern UI libraries.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+A sleek chat interface enabling users to send messages and share images, built with React, TailwindCSS, DaisyUI, and React Router. Connects to backend APIs for real-time communication and media uploads.
 
-Currently, two official plugins are available:
+## Key Features
+- User-friendly chat UI
+- Responsive design
+- Image uploading via Cloudinary
+- Client-side routing with React Router
+- Efficient data fetching with React Query
+- State management with Zustand
+- Authentication handling (tokens)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Technologies Used
+- React.js
+- TailwindCSS & DaisyUI
+- React Router
+- TanStack React Query
+- Zustand
+- Cloudinary for media uploads
+- JWT for auth (handled in backend)
