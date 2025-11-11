@@ -1,19 +1,19 @@
 import {
-    ChatBubbleLeftIcon,
-    EyeIcon,
-    EyeSlashIcon,
-    UserIcon as UIcon,
-    UsersIcon as UsersI,
-    LockClosedIcon,
-    EnvelopeIcon,
-    Cog6ToothIcon,
-    ArrowRightStartOnRectangleIcon,
-    CameraIcon as CIcon,
-    ChevronDownIcon,
-    PaperAirplaneIcon,
-    PhotoIcon,
-    XMarkIcon,
-} from "@heroicons/react/24/outline";
+  ChatBubbleLeftIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  UserIcon as UIcon,
+  UsersIcon as UsersI,
+  LockClosedIcon,
+  EnvelopeIcon,
+  Cog6ToothIcon,
+  ArrowRightStartOnRectangleIcon,
+  CameraIcon as CIcon,
+  ChevronDownIcon,
+  PaperAirplaneIcon,
+  PhotoIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 
 export const ChatSquareIcon = ChatBubbleLeftIcon;
 export const EyeOnIcon = EyeIcon;

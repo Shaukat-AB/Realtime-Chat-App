@@ -1,5 +1,5 @@
-export { queryClient } from "./queryClient";
-export { isFormValid } from "./validate";
+export { queryClient } from './queryClient';
+export { isFormValid } from './validate';
 
 // Date
-export { formatDateToLocalTimeIn2Digit } from "./date";
+export { formatDateToLocalTimeIn2Digit } from './date';
