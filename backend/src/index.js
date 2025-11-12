@@ -6,6 +6,7 @@ import messageRoutes from './routes/message.route.js';
 import { connectDb } from './lib/db/db.js';
 import cors from 'cors';
 import { app, server } from './lib/socket/socket.js';
+import { errorMiddleware } from './middleware/error.middleware.js';
 
 dotenv.config();
 
@@ -25,6 +26,9 @@ app.use(
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/message', messageRoutes);
+
+// Error Middleware
+app.use(errorMiddleware);
 
 server.listen(PORT, () => {
   console.log('server is running at port: ' + PORT);

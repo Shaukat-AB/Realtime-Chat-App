@@ -22,3 +22,9 @@ export const genToken = (userId, res) => {
 
   return token;
 };
+
+export const newError = (message, status) => {
+  const err = new Error(message);
+  err.status = status;
+  return err;
+};

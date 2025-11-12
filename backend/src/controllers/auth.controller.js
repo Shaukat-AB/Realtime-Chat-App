@@ -1,27 +1,23 @@
 import { compare, genSalt, hash } from 'bcryptjs';
 import User from '../models/user.model.js';
-import { cookieName, genToken } from '../lib/utils/utils.js';
+import { cookieName, genToken, newError } from '../lib/utils/utils.js';
 import cloudinary from '../lib/cloudinary/cloudinary.js';
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const { email, fullname, password, avatar } = req.body;
   const PASSWORD_LEN = 6;
 
   try {
     if (!email || !fullname || !password) {
-      return res.status(400).json({
-        message: 'Email, Fullname, Password are required',
-      });
+      throw newError('Email, Fullname, Password are required', 400);
     }
     if (password.length < PASSWORD_LEN) {
-      return res.status(400).json({
-        message: 'Password must be 6 or more characters',
-      });
+      throw newError('Password must be 6 or more characters', 400);
     }
 
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'Email already exists' });
+      throw newError('Email already exists', 400);
     }
 
     const salt = await genSalt(10);
@@ -45,26 +41,26 @@ export const signup = async (req, res) => {
         avatar: newUser.avatar,
       });
     } else {
-      res.status(400).json({ message: 'Invalid user data' });
+      throw newError('Invalid user data', 400);
     }
   } catch (err) {
     console.log('Signup auth.controller error: ', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
 
-export const signin = async (req, res) => {
+export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      throw newError('Invalid credentials', 400);
     }
 
     const isPasswordCorrect = await compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      throw newError('Invalid credentials', 400);
     }
 
     genToken(user._id, res);
@@ -77,27 +73,27 @@ export const signin = async (req, res) => {
     });
   } catch (err) {
     console.log('Signin auth.controller error: ', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
 
-export const signout = (req, res) => {
+export const signout = (req, res, next) => {
   try {
     res.cookie(cookieName, '', { maxAge: 0 });
     res.status(200).json({ message: 'Sign out successfully' });
   } catch (err) {
     console.log('Signout auth.controller error: ', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
 
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res, next) => {
   try {
     const { avatar } = req.body;
     const userId = req.user._id;
-    if (!avatar) {
-      return res.status(400).json({ message: 'User avatar required' });
-    }
+
+    if (!avatar) throw newError('User avatar required', 400);
+
     const uploaded = await cloudinary.uploader.upload(avatar);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -109,15 +105,15 @@ export const updateProfile = async (req, res) => {
     res.status(200).json(updatedUser);
   } catch (err) {
     console.log('UpdateProfile auth.controller error: ', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
 
-export const verifyAuth = (req, res) => {
+export const verifyAuth = (req, res, next) => {
   try {
     res.status(200).json(req.user);
   } catch (err) {
     console.log('VerifyAuth auth.controller error: ', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    next(err);
   }
 };
