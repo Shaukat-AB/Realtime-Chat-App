@@ -13,3 +13,6 @@ export const apiPath = {
   API_MESSAGES_BY_ID: `${BASE_URL}/api/message/`, //add userId
   API_SEND_MESSAGE_BY_ID: `${BASE_URL}/api/message/send/`, //add userId
 };
+
+export * from './authApi';
+export * from './chatApi';

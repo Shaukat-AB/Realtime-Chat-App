@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
 import { useAuthStore } from './useAuthStore';
-import { apiPath } from '../api';
+import { getContacts, getCurrentMessages, postSendMessage } from '../api';
 import { socketEvent } from '../lib/socket';
 
 export const useChatStore = create((set, get) => ({
@@ -10,38 +10,30 @@ export const useChatStore = create((set, get) => ({
   contacts: [],
 
   getContacts: async () => {
-    const res = await fetch(apiPath.API_CONTACTS, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    if (!res.ok) throw new Error('Error getContacts');
+    const users = await getContacts();
 
-    const parsed = await res.json();
-    if (!parsed?.message) {
-      set({ contacts: parsed });
-      return parsed;
-    } else if (parsed?.message) {
-      toast.error(parsed?.message);
+    if (!users?.message) {
+      set({ contacts: users });
+      return users;
+    } else if (users?.message) {
+      toast.error(users?.message);
     }
+
     set({ contacts: [] });
     return [];
   },
 
   getCurrentMessages: async () => {
     const { currentContact } = get();
-    const res = await fetch(apiPath.API_MESSAGES_BY_ID + currentContact._id, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    if (!res.ok) throw new Error('Error getCurrentMessages');
+    const messages = await getCurrentMessages(currentContact._id);
 
-    const parsed = await res.json();
-    if (!parsed?.message) {
-      set({ currentMessages: parsed });
-      return parsed;
-    } else if (parsed?.message) {
-      toast.error(parsed?.message);
+    if (!messages?.message) {
+      set({ currentMessages: messages });
+      return messages;
+    } else if (messages?.message) {
+      toast.error(messages?.message);
     }
+
     set({ currentMessages: [] });
     return [];
   },
@@ -50,26 +42,12 @@ export const useChatStore = create((set, get) => ({
 
   sendMessage: async (message) => {
     const { currentContact, currentMessages } = get();
-    const res = await fetch(
-      apiPath.API_SEND_MESSAGE_BY_ID + currentContact._id,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-        credentials: 'include',
-      }
-    );
-    const parsed = await res.json();
-    if (!res.ok) {
-      if (parsed?.message) {
-        toast.error(parsed.message);
-      }
-      throw new Error('Error sendMessage');
-    }
-    set({ currentMessages: [...currentMessages, parsed] });
-    return parsed;
+    const newMessage = await postSendMessage(message, currentContact._id);
+
+    if (newMessage?.message) toast.error(newMessage.message);
+
+    set({ currentMessages: [...currentMessages, newMessage] });
+    return newMessage;
   },
 
   connectToMessages: () => {

@@ -1,7 +1,14 @@
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
 import { io } from 'socket.io-client';
-import { BASE_URL, apiPath } from '../api';
+import {
+  BASE_URL,
+  getVerifyAuth,
+  postSignin,
+  postSignout,
+  postSignup,
+  putUpdateProfile,
+} from '../api';
 import { socketEvent } from '../lib/socket';
 
 export const useAuthStore = create((set, get) => ({
@@ -10,17 +17,12 @@ export const useAuthStore = create((set, get) => ({
   socket: null,
 
   verifyAuth: async () => {
-    const res = await fetch(apiPath.API_VERIFY, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    if (!res.ok) throw new Error('Error verifyAuth');
+    const user = await getVerifyAuth();
 
-    const parsed = await res.json();
-    if (parsed?.email) {
-      set({ authUser: parsed });
+    if (user?.email) {
+      set({ authUser: user });
       get().connectSocket();
-      return parsed;
+      return user;
     }
 
     set({ authUser: null });
@@ -30,86 +32,53 @@ export const useAuthStore = create((set, get) => ({
   },
 
   signup: async (data) => {
-    const res = await fetch(apiPath.API_SIGN_UP, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      credentials: 'include',
-    });
-    const parsed = await res.json();
-    if (!res.ok) {
-      if (parsed?.message) {
-        toast.error(parsed.message);
-      }
-      set({ authUser: null });
-      throw new Error('Error Signup');
+    const newUser = await postSignup(data);
+
+    if (newUser?.message) {
+      toast.error(newUser.message);
+      return null;
     }
 
-    set({ authUser: parsed });
+    set({ authUser: newUser });
     toast.success('Signing up completed');
     get().connectSocket();
-    return parsed;
+
+    return newUser;
   },
 
   signin: async (data) => {
-    const res = await fetch(apiPath.API_SIGN_IN, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      credentials: 'include',
-    });
-    const parsed = await res.json();
-    if (!res.ok) {
-      if (parsed?.message) {
-        toast.error(parsed.message);
-      }
+    const user = await postSignin(data);
 
-      set({ authUser: null });
-      throw new Error('Error Signin');
+    if (user?.message) {
+      toast.error(user.message);
+      return null;
     }
-    set({ authUser: parsed });
+
+    set({ authUser: user });
     toast.success('Signing in completed');
     get().connectSocket();
-    return parsed;
+
+    return user;
   },
 
   signout: async () => {
-    const res = await fetch(apiPath.API_SIGN_OUT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-    if (!res.ok) {
-      throw new Error('Error Signout');
-    }
+    const success = await postSignout();
+    if (!success) return null;
+
     set({ authUser: null });
     toast.success('Signing out completed');
     get().disconnectSocket();
   },
 
   updateProfile: async (data) => {
-    const res = await fetch(apiPath.API_UPDATE_PROFILE, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      credentials: 'include',
-    });
-    const parsed = await res.json();
-    if (!res.ok) {
-      if (parsed?.message) {
-        toast.error(parsed.message);
-      }
-      throw new Error('Error Signin');
+    const updatedUser = await putUpdateProfile(data);
+
+    if (updatedUser?.message) {
+      toast.error(updatedUser.message);
+      return null;
     }
-    set({ authUser: parsed });
+
+    set({ authUser: updatedUser });
     toast.success('Image Uploaded');
   },
 
@@ -125,6 +94,7 @@ export const useAuthStore = create((set, get) => ({
       set({ onlineUsers: [...userIdArr] });
     });
   },
+
   disconnectSocket: () => {
     const { socket } = get();
     if (socket?.connected) socket.disconnect();
