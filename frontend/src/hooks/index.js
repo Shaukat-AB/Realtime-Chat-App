@@ -1,3 +1,5 @@
+export { useRefScrollIntoView } from './useRefScrollIntoView';
+
 //Queries
 export { useVerifyAuth } from './queries/useVerifyAuth';
 export { useGetMessages } from './queries/useGetMessages';

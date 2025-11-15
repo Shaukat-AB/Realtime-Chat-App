@@ -1,33 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import SendMessageInput from './SendMessageInput';
 import MessageSkeleton from '../Skeletons/MessageSkeleton';
 import { useAuthStore, useChatStore } from '../../store';
 import ChatHeader from './ChatHeader';
 import Avatar from '../Avatar/Avatar';
 import { formatDateToLocalTimeIn2Digit } from '../../lib/utils';
-import { useGetMessages } from '../../hooks';
+import { useGetMessages, useRefScrollIntoView } from '../../hooks';
 
 const ShowChatMessages = () => {
+  const { authUser } = useAuthStore();
+  const { isLoading } = useGetMessages();
+
   const {
     currentMessages,
     currentContact,
     connectToMessages,
     disconnectToMessages,
   } = useChatStore();
-  const { authUser } = useAuthStore();
-  const messageEndRef = useRef(null);
-  const { isLoading } = useGetMessages();
+
+  const messageEndRef = useRefScrollIntoView([
+    isLoading,
+    currentMessages,
+    currentContact._id,
+  ]);
 
   useEffect(() => {
     connectToMessages();
     return () => disconnectToMessages();
   }, [currentContact._id, connectToMessages, disconnectToMessages]);
-
-  useEffect(() => {
-    if (messageEndRef.current && currentMessages) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [isLoading, currentMessages, currentContact._id]);
 
   if (isLoading) {
     return (
