@@ -4,10 +4,11 @@ import { useAuthStore } from './useAuthStore';
 import { getContacts, getCurrentMessages, postSendMessage } from '../api';
 import { socketEvent } from '../lib/socket';
 
-export const useChatStore = create((set, get) => ({
+export const useChatStore = create((set, get, store) => ({
   currentContact: null,
   currentMessages: [],
   contacts: [],
+  reset: () => set(store.getInitialState()), //reset to initial state
 
   getContacts: async () => {
     const users = await getContacts();

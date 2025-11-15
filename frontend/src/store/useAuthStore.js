@@ -10,6 +10,7 @@ import {
   putUpdateProfile,
 } from '../api';
 import { socketEvent } from '../lib/socket';
+import { useChatStore } from './useChatStore';
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -66,6 +67,10 @@ export const useAuthStore = create((set, get) => ({
     if (!success) return null;
 
     set({ authUser: null });
+
+    // User signed out reset user's contacts and chats
+    useChatStore.getState().reset();
+
     toast.success('Signing out completed');
     get().disconnectSocket();
   },

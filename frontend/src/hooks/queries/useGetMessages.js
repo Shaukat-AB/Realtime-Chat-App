@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { useChatStore } from '../../store';
+import { useAuthStore, useChatStore } from '../../store';
 
 export const useGetMessages = () => {
+  const { authUser } = useAuthStore();
   const { getCurrentMessages, currentContact } = useChatStore();
 
   return useQuery({
     queryFn: getCurrentMessages,
-    queryKey: ['currentMessages', currentContact?._id],
-    staleTime: 0,
+    queryKey: ['currentMessages', currentContact?._id, authUser._id],
+    staleTime: 0, //todo: fix outdated currentMessages without staleTime = 0
   });
 };
