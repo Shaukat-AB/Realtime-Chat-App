@@ -15,7 +15,8 @@ const PasswordInput = ({ value, onChange }) => {
         </div>
         <input
           type={show ? 'text' : 'password'}
-          className={`input input-bordered w-full pl-10`}
+          name="password"
+          className={'input input-bordered w-full pl-10'}
           placeholder="••••••••"
           value={value}
           onChange={onChange}
