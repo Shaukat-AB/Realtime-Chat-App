@@ -1,6 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { LoadingSpinner, NavBar } from './components';
-import { HomePage, ProfilePage, SigninPage, SignupPage } from './pages';
+import {
+  ErrorPage,
+  HomePage,
+  ProfilePage,
+  SigninPage,
+  SignupPage,
+} from './pages';
 import { useAuthStore } from './store/useAuthStore';
 import { Toaster } from 'react-hot-toast';
 import { useVerifyAuth } from './hooks';
@@ -21,6 +27,7 @@ const App = () => {
   return (
     <div>
       <NavBar />
+
       <Routes>
         <Route
           index
@@ -38,7 +45,10 @@ const App = () => {
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to="/signin" />}
         />
+
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
+
       <Toaster />
     </div>
   );
