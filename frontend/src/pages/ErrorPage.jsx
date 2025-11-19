@@ -4,6 +4,8 @@ import { XIcon } from '../lib/icons';
 export const ErrorPage = () => {
   return (
     <div className="pt-20 h-screen">
+      <title>Page Not Found | Chat-App</title>
+
       <div className="max-w-2xl mx-auto px-4 py-8 lg:py-16">
         <div className="mx-auto max-w-screen-sm text-center">
           <h1 className="mb-5 text-7xl tracking-tight font-extrabold text-primary">

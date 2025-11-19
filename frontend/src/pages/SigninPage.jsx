@@ -28,6 +28,8 @@ const SigninPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
+      <title>Signin | Chat-App</title>
+
       <div className="w-full flex flex-col justify-center items-center px-6 sm:px-12">
         <div className="w-full max-w-sm space-y-8 md:max-w-md">
           <FormTitleWithIconText

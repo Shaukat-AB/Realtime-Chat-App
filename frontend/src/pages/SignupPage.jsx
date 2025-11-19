@@ -33,6 +33,8 @@ const SignupPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
+      <title>Signup | Chat-App</title>
+
       <div className="w-full flex flex-col justify-center items-center py-6 sm:py-12">
         <div className="w-full max-w-sm space-y-8 md:max-w-md">
           <FormTitleWithIconText
