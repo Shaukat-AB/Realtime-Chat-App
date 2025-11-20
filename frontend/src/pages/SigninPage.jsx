@@ -7,6 +7,7 @@ import {
   SubmitBtnWithLoading,
 } from '../components';
 import { useSignin } from '../hooks';
+import { isSigninUserValid } from '../lib/utils';
 
 const SigninPage = () => {
   const { mutate, isPending } = useSignin();
@@ -23,7 +24,10 @@ const SigninPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
+
+    if (isSigninUserValid(formData) === true) {
+      mutate(formData);
+    }
   };
 
   return (

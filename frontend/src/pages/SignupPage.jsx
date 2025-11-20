@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { isFormValid } from '../lib/utils';
+import { isNewUserValid } from '../lib/utils';
 import {
   EmailInput,
   FormEndLink,
@@ -26,7 +26,7 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isFormValid(formData) == true) {
+    if (isNewUserValid(formData) === true) {
       mutate(formData);
     }
   };

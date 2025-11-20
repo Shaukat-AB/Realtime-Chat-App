@@ -2,23 +2,17 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import User from '../models/user.model.js';
 import { cookieName, genToken, newError } from '../lib/utils/utils.js';
 import cloudinary from '../lib/cloudinary/cloudinary.js';
+import { safeNewUserParse } from '../lib/zod/zod.js';
 
 export const signup = async (req, res, next) => {
   const { email, fullname, password, avatar } = req.body;
-  const PASSWORD_LEN = 6;
 
   try {
-    if (!email || !fullname || !password) {
-      throw newError('Email, Fullname, Password are required', 400);
-    }
-    if (password.length < PASSWORD_LEN) {
-      throw newError('Password must be 6 or more characters', 400);
-    }
+    const result = safeNewUserParse(req.body);
+    if (!result.success) throw newError(result.message, 400);
 
     const user = await User.findOne({ email });
-    if (user) {
-      throw newError('Email already exists', 400);
-    }
+    if (user) throw newError('Email already exists', 400);
 
     const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
@@ -30,19 +24,17 @@ export const signup = async (req, res, next) => {
       avatar,
     });
 
-    if (newUser) {
-      genToken(newUser._id, res);
+    if (!newUser) throw newError('Invalid user data', 400);
 
-      await newUser.save();
-      res.status(201).json({
-        _id: newUser._id,
-        email: newUser.email,
-        fullname: newUser.fullname,
-        avatar: newUser.avatar,
-      });
-    } else {
-      throw newError('Invalid user data', 400);
-    }
+    genToken(newUser._id, res);
+    await newUser.save();
+
+    res.status(201).json({
+      _id: newUser._id,
+      email: newUser.email,
+      fullname: newUser.fullname,
+      avatar: newUser.avatar,
+    });
   } catch (err) {
     console.log('Signup auth.controller error: ', err.message);
     next(err);
@@ -54,14 +46,10 @@ export const signin = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) {
-      throw newError('Invalid credentials', 400);
-    }
+    if (!user) throw newError('Invalid credentials', 400);
 
     const isPasswordCorrect = await compare(password, user.password);
-    if (!isPasswordCorrect) {
-      throw newError('Invalid credentials', 400);
-    }
+    if (!isPasswordCorrect) throw newError('Invalid credentials', 400);
 
     genToken(user._id, res);
 
