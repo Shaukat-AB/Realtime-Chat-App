@@ -8,6 +8,5 @@ export const useGetMessages = () => {
   return useQuery({
     queryFn: getCurrentMessages,
     queryKey: ['currentMessages', currentContact?._id, authUser._id],
-    staleTime: 0, //todo: fix outdated currentMessages without staleTime = 0
   });
 };

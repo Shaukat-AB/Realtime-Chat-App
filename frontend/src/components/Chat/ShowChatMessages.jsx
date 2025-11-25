@@ -9,14 +9,10 @@ import { useGetMessages, useRefScrollIntoView } from '../../hooks';
 
 const ShowChatMessages = () => {
   const { authUser } = useAuthStore();
-  const { isLoading } = useGetMessages();
+  const { data: currentMessages, isLoading } = useGetMessages();
 
-  const {
-    currentMessages,
-    currentContact,
-    connectToMessages,
-    disconnectToMessages,
-  } = useChatStore();
+  const { currentContact, connectToMessages, disconnectToMessages } =
+    useChatStore();
 
   const messageEndRef = useRefScrollIntoView([
     isLoading,

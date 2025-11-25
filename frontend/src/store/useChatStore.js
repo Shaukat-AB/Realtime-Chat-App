@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { useAuthStore } from './useAuthStore';
 import { getContacts, getCurrentMessages, postSendMessage } from '../api';
 import { socketEvent } from '../lib/socket';
+import { queryClient } from '../lib/utils';
 
 export const useChatStore = create((set, get, store) => ({
   currentContact: null,
@@ -48,6 +49,8 @@ export const useChatStore = create((set, get, store) => ({
     if (newMessage?.message) toast.error(newMessage.message);
 
     set({ currentMessages: [...currentMessages, newMessage] });
+    queryClient.invalidateQueries('currentMessages');
+
     return newMessage;
   },
 
@@ -61,6 +64,7 @@ export const useChatStore = create((set, get, store) => ({
     socket.on(socketEvent.EV_NEW_MESSAGE, (newMessage) => {
       if (newMessage.senderId !== currentContact._id) return;
       set({ currentMessages: [...get().currentMessages, newMessage] });
+      queryClient.invalidateQueries('currentMessages');
     });
   },
 
