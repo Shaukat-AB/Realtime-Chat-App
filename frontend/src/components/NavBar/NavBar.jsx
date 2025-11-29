@@ -2,9 +2,18 @@ import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import { ChatSquareIcon, SignoutIcon, UserIcon } from '../../lib/icons';
 import ThemeDropdown from './ThemeDropdown';
+import { useQueryClient } from '@tanstack/react-query';
 
 const NavBar = () => {
   const { signout, authUser } = useAuthStore();
+  const queryClient = useQueryClient();
+
+  const handleSignOut = async () => {
+    await signout();
+
+    //invalidate contacts incase user immediately signs in after
+    await queryClient.invalidateQueries('contacts');
+  };
 
   return (
     <header className="border-b border-base-300 fixed w-full top-0 z-40 backdrop-blur-lg bg-base-100/80">
@@ -34,7 +43,7 @@ const NavBar = () => {
 
                 <button
                   className="btn btn-sm flex gap-2 items-center"
-                  onClick={signout}
+                  onClick={handleSignOut}
                 >
                   <SignoutIcon className="w-5 h-5" />
                   <span className="hidden sm:inline">Signout</span>
