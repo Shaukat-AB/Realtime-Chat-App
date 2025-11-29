@@ -4,12 +4,20 @@ import { useAuthStore } from './useAuthStore';
 import { getContacts, getCurrentMessages, postSendMessage } from '../api';
 import { socketEvent } from '../lib/socket';
 import { queryClient } from '../lib/utils';
+import { newStorage } from '../lib/storage';
+
+const currentContactStorage = newStorage('current-contact', null);
 
 export const useChatStore = create((set, get, store) => ({
-  currentContact: null,
+  currentContact: currentContactStorage.get(),
   currentMessages: [],
   contacts: [],
-  reset: () => set(store.getInitialState()), //reset to initial state
+  reset: () => {
+    set(store.getInitialState()); // reset to initial state
+
+    // Manually reset currentContact since zustand does not re-evaluate the state with out refreshing the page
+    get().setCurrentContact(null);
+  },
 
   getContacts: async () => {
     const users = await getContacts();
@@ -40,7 +48,10 @@ export const useChatStore = create((set, get, store) => ({
     return [];
   },
 
-  setCurrentContact: (user) => set({ currentContact: user }),
+  setCurrentContact: (user) => {
+    set({ currentContact: user });
+    currentContactStorage.set(user);
+  },
 
   sendMessage: async (message) => {
     const { currentContact, currentMessages } = get();
