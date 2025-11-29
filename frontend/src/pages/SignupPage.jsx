@@ -48,8 +48,8 @@ const SignupPage = () => {
                 <span className="label-text font-medium">Full Name</span>
               </label>
               <div className="relative">
-                <div className="absolute z-1 inset-y-0 top-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <UserIcon className="w-5 h-5 text-base-content/40" />
+                <div className="absolute inset-y-0 top-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <UserIcon className="w-5 h-5 text-base-content/40 z-4" />
                 </div>
                 <input
                   type="text"

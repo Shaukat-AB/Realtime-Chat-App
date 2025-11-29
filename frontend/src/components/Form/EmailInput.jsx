@@ -7,8 +7,8 @@ const EmailInput = ({ value, onChange }) => {
         <span className="label-text font-medium">Email</span>
       </label>
       <div className="relative">
-        <div className="absolute z-1 inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <MailIcon className="w-5 h-5 text-base-content/40" />
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <MailIcon className="w-5 h-5 text-base-content/40 z-4" />
         </div>
         <input
           type="email"
@@ -17,6 +17,7 @@ const EmailInput = ({ value, onChange }) => {
           placeholder="name@email.com"
           value={value}
           onChange={onChange}
+          maxLength={48}
           required
         />
       </div>
