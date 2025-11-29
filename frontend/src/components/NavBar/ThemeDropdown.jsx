@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { BtnArrowDownIcon } from '../../lib/icons';
 import ThemeColoredSquares from './ThemeColoredSquares';
+import { newStorage } from '../../lib/storage';
 
 const themeLocalStorageKey = 'chat-theme';
-const storedTheme = localStorage.getItem(themeLocalStorageKey) || 'default';
+const themeStorage = newStorage(themeLocalStorageKey, 'default');
+
 const themes = [
   'default',
   'light',
@@ -15,11 +17,11 @@ const themes = [
 ];
 
 const ThemeDropdown = () => {
-  const [theme, setTheme] = useState(storedTheme);
+  const [theme, setTheme] = useState(themeStorage.get);
 
   const handleThemeChange = (e) => {
     setTheme(e.target.value);
-    localStorage.setItem(themeLocalStorageKey, e.target.value);
+    themeStorage.set(e.target.value);
   };
 
   return (
