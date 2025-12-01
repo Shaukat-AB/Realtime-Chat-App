@@ -10,8 +10,9 @@ export const apiPath = {
 
   //Message
   API_CONTACTS: `${BASE_URL}/api/message/user-contacts`,
-  API_MESSAGES_BY_ID: `${BASE_URL}/api/message/`, //add userId
-  API_SEND_MESSAGE_BY_ID: `${BASE_URL}/api/message/send/`, //add userId
+  API_MESSAGES_BY_ID: `${BASE_URL}/api/message/`, // add userId
+  API_SEND_MESSAGE_BY_ID: `${BASE_URL}/api/message/send/`, // add userId
+  API_DELETE_MESSAGES: `${BASE_URL}/api/message/delete/`,
 };
 
 export * from './authApi';

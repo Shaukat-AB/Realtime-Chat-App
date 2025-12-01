@@ -39,3 +39,36 @@ export const postSendMessage = async (message, contactId) => {
 
   return parsed;
 };
+
+export const deleteMessages = async (messageIds = []) => {
+  const res = await fetch(apiPath.API_DELETE_MESSAGES, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ messageIds }),
+    credentials: 'include',
+  });
+
+  const parsed = await res.json();
+
+  if (!res.ok && !parsed?.message) throw new Error('Error Message delete');
+
+  return parsed;
+};
+
+export const softDeleteMessages = async (messageIds = []) => {
+  const res = await fetch(apiPath.API_DELETE_MESSAGES, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ messageIds }),
+    credentials: 'include',
+  });
+
+  const parsed = await res.json();
+  if (!res.ok && !parsed?.message) throw new Error('Error Message delete');
+
+  return parsed;
+};

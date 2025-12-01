@@ -10,6 +10,7 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN;
 const app = express();
 const server = http.createServer(app);
 
+const EV_DELETE_MESSAGE = 'deleteMessage';
 const EV_NEW_MESSAGE = 'newMessage';
 const EV_ONLINE_USERS = 'onlineUsers';
 
@@ -39,4 +40,4 @@ io.on('connection', (socket) => {
   });
 });
 
-export { io, app, server, getUserSocketId, EV_NEW_MESSAGE };
+export { io, app, server, getUserSocketId, EV_NEW_MESSAGE, EV_DELETE_MESSAGE };

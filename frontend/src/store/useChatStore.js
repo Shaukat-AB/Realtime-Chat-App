@@ -53,6 +53,15 @@ export const useChatStore = create((set, get, store) => ({
     currentContactStorage.set(user);
   },
 
+  removeTempMessages: (tempMessageIds) => {
+    set({
+      currentMessages: get().currentMessages.filter(
+        (m) => !tempMessageIds.includes(m._id)
+      ),
+    });
+    toast.success(`${tempMessageIds.length} Temporary Messages Cleared`);
+  },
+
   sendMessage: async (message) => {
     const { currentContact, currentMessages } = get();
     const newMessage = await postSendMessage(message, currentContact._id);
@@ -72,10 +81,26 @@ export const useChatStore = create((set, get, store) => ({
     const socket = useAuthStore.getState().socket;
     if (!socket) return;
 
+    // New message Event
     socket.on(socketEvent.EV_NEW_MESSAGE, (newMessage) => {
       if (newMessage.senderId !== currentContact._id) return;
+
       set({ currentMessages: [...get().currentMessages, newMessage] });
       queryClient.invalidateQueries('currentMessages');
+    });
+
+    // Delete message Event
+    socket.on(socketEvent.EV_DELETE_MESSAGE, (deletedMsgs) => {
+      const newMessages = [...get().currentMessages];
+
+      // This temporarily retains deleted message, so a message can be shown to user
+      newMessages.forEach((msg, i) => {
+        deletedMsgs.forEach((deletedMsg) => {
+          if (msg._id === deletedMsg._id) newMessages[i] = deletedMsg;
+        });
+      });
+
+      set({ currentMessages: newMessages });
     });
   },
 
@@ -84,5 +109,6 @@ export const useChatStore = create((set, get, store) => ({
     if (!socket) return;
 
     socket.off(socketEvent.EV_NEW_MESSAGE);
+    socket.off(socketEvent.EV_DELETE_MESSAGE);
   },
 }));

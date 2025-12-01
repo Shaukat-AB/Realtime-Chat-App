@@ -1,29 +1,37 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import SendMessageInput from './SendMessageInput';
 import MessageSkeleton from '../Skeletons/MessageSkeleton';
-import { useAuthStore, useChatStore } from '../../store';
 import ChatHeader from './ChatHeader';
-import Avatar from '../Avatar/Avatar';
-import { formatDateToLocalTimeIn2Digit } from '../../lib/utils';
-import { useGetMessages, useRefScrollIntoView } from '../../hooks';
+import {
+  useChatConnect,
+  useGetMessages,
+  useSoftHardDelMessages,
+} from '../../hooks';
+import MessageCard from './MessageCard';
+import ChatMessagesWrapper from './ChatMessagesWrapper';
+import toast from 'react-hot-toast';
+import { useChatStore } from '../../store';
 
 const ShowChatMessages = () => {
-  const { authUser } = useAuthStore();
-  const { data: currentMessages, isLoading } = useGetMessages();
+  useChatConnect();
 
-  const { currentContact, connectToMessages, disconnectToMessages } =
-    useChatStore();
+  const { currentMessages } = useChatStore();
+  const { isLoading } = useGetMessages();
+  const [selectedMessages, setSelectedMessages] = useState([]);
 
-  const messageEndRef = useRefScrollIntoView([
-    isLoading,
-    currentMessages,
-    currentContact._id,
-  ]);
+  const onDeleteMessages = useSoftHardDelMessages({
+    selectedMessages,
+    resetSelectedMessages: () => setSelectedMessages([]),
+    onSuccess: toast.success,
+  });
 
-  useEffect(() => {
-    connectToMessages();
-    return () => disconnectToMessages();
-  }, [currentContact._id, connectToMessages, disconnectToMessages]);
+  const onMessageSelected = (message) => {
+    const updatedMessages = selectedMessages.some((m) => m._id === message._id)
+      ? selectedMessages.filter((m) => m._id !== message._id)
+      : [...selectedMessages, message];
+
+    setSelectedMessages(updatedMessages);
+  };
 
   if (isLoading) {
     return (
@@ -37,49 +45,24 @@ const ShowChatMessages = () => {
 
   return (
     <div className="flex-1 flex flex-col overflow-auto">
-      <ChatHeader />
+      <ChatHeader
+        cancelSelection={() => setSelectedMessages([])}
+        onDeleteMessages={onDeleteMessages}
+        selectedCount={selectedMessages.length}
+      />
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <ChatMessagesWrapper isLoading={isLoading}>
         {currentMessages.map((msg) => (
-          <div
+          <MessageCard
             key={msg._id}
-            className={`chat ${
-              msg.senderId === authUser._id ? 'chat-end' : 'chat-start'
-            }`}
-          >
-            <div className=" chat-image avatar">
-              <div className="size-10 rounded-full border">
-                <Avatar
-                  src={
-                    msg.senderId === authUser._id
-                      ? authUser.avatar
-                      : currentContact.avatar
-                  }
-                  alt="profile avatar"
-                />
-              </div>
-            </div>
-            <div className="chat-header mb-1">
-              <time className="text-xs opacity-50 ml-1">
-                {formatDateToLocalTimeIn2Digit(msg.createdAt)}
-              </time>
-            </div>
-            <div className="chat-bubble flex flex-col">
-              {msg.image && (
-                <img
-                  src={msg.image}
-                  alt="Attachment"
-                  className="sm:max-w-[200px] rounded-md mb-2"
-                />
-              )}
-              {msg.text && <p>{msg.text}</p>}
-            </div>
-          </div>
+            message={msg}
+            selected={(() => selectedMessages.some((m) => m._id === msg._id))()}
+            onSelected={() => onMessageSelected({ ...msg })}
+            selectedCount={selectedMessages.length}
+          />
         ))}
+      </ChatMessagesWrapper>
 
-        {/* Scrolls into view as message's end*/}
-        <span ref={messageEndRef}></span>
-      </div>
       <SendMessageInput />
     </div>
   );
