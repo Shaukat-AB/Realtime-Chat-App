@@ -15,9 +15,13 @@ import { useChatStore } from '../../store';
 const ShowChatMessages = () => {
   useChatConnect();
 
-  const { currentMessages } = useChatStore();
-  const { isLoading } = useGetMessages();
+  const { currentMessages: tempMessages } = useChatStore();
+  const { data, isLoading } = useGetMessages();
   const [selectedMessages, setSelectedMessages] = useState([]);
+
+  const currentMessages = tempMessages?.some((m) => m?.temporary)
+    ? tempMessages
+    : data;
 
   const onDeleteMessages = useSoftHardDelMessages({
     selectedMessages,
