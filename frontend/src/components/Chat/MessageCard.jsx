@@ -34,7 +34,7 @@ const MessageCard = ({
     <div
       aria-selected={selected === true}
       tabIndex={0}
-      className={`chat p-4 ${selected ? 'bg-primary/20' : ''} ${
+      className={`chat px-4 py-3.5 ${selected ? 'bg-primary/20' : ''} ${
         isSenderAuthUser ? 'chat-end' : 'chat-start'
       }`}
       onDoubleClick={handleDoubleClick}
