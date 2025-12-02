@@ -1,5 +1,5 @@
 export { useRefScrollIntoView } from './useRefScrollIntoView';
-// export { useEffectAfterFirstRender } from './useEffectAfterFirstRender';
+export { useEffectAfterFirstRender } from './useEffectAfterFirstRender';
 export { useSoftHardDelMessages } from './useSoftHardDelMessages';
 export { useChatConnect } from './useChatConnect';
 

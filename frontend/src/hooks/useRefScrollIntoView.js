@@ -1,14 +1,12 @@
-import { useEffect, useRef } from 'react';
-
-let initial = true;
+import { useRef } from 'react';
+import { useEffectAfterFirstRender } from './useEffectAfterFirstRender';
 
 export const useRefScrollIntoView = (deps = []) => {
   const ref = useRef(null);
 
-  useEffect(() => {
+  useEffectAfterFirstRender(() => {
     if (ref.current) {
-      ref.current.scrollIntoView(initial ? {} : { behavior: 'smooth' });
-      if (initial) initial = false;
+      ref.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [deps]);
 
