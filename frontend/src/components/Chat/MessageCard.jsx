@@ -14,6 +14,7 @@ const MessageCard = ({
 }) => {
   const { authUser } = useAuthStore();
   const { currentContact } = useChatStore();
+  const isSenderAuthUser = message.senderId === authUser._id;
 
   const handleDoubleClick = (_e) => {
     if (selectedCount === 0) onSelected();
@@ -34,14 +35,14 @@ const MessageCard = ({
       aria-selected={selected === true}
       tabIndex={0}
       className={`chat p-4 ${selected ? 'bg-primary/20' : ''} ${
-        message.senderId === authUser._id ? 'chat-end' : 'chat-start'
+        isSenderAuthUser ? 'chat-end' : 'chat-start'
       }`}
       onDoubleClick={handleDoubleClick}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
     >
       <div className=" chat-image avatar">
-        <div className="size-10 rounded-full border">
+        <div className="size-10 rounded-full border hidden sm:block">
           <Avatar
             src={
               message.senderId === authUser._id
@@ -61,12 +62,16 @@ const MessageCard = ({
         </div>
       </Activity>
 
-      <div className="chat-bubble flex flex-col cursor-default">
+      <div
+        className={`chat-bubble ${
+          isSenderAuthUser ? 'chat-bubble-primary' : 'chat-bubble-neutral'
+        } flex flex-col cursor-default`}
+      >
         {message.image && (
           <img
             src={message.image}
             alt="Attachment"
-            className="sm:max-w-[200px] rounded-md mb-2"
+            className="max-w-50 sm:max-w-54 xl:max-w-60 rounded-md mb-2"
           />
         )}
 
