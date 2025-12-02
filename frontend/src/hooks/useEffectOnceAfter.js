@@ -1,14 +1,19 @@
 import { useEffect, useRef } from 'react';
 
-export const useEffectAfterFirstRender = (callback = () => null, deps = []) => {
+export const useEffectOnceAfter = (
+  callback = () => null,
+  afterCallback = () => null,
+  deps = []
+) => {
   const afterRef = useRef(false);
 
   useEffect(() => {
     if (afterRef.current) {
-      const cleanup = callback();
+      const cleanup = afterCallback();
       return () => (typeof cleanup === 'function' ? cleanup() : null);
     }
 
+    callback();
     afterRef.current = true;
   }, deps);
 };
