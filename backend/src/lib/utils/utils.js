@@ -23,7 +23,7 @@ export const genToken = (userId, res) => {
   return token;
 };
 
-export const newError = (message, status) => {
+export const newError = (message = 'Internal Server Error', status = 500) => {
   const err = new Error(message);
   err.status = status;
   return err;
