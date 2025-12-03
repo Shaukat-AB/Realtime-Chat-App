@@ -6,16 +6,18 @@ export const ErrorPage = ({ error = null, resetErrorBoundary = null }) => {
     <div className="pt-20 px-4 h-screen">
       <title>Page Not Found | Chat-App</title>
 
-      <div className="max-w-2xl mx-auto px-4 py-8 lg:py-16">
+      <div className="h-4/5 flex items-center justify-center">
         <div className="mx-auto max-w-screen-sm text-center">
-          <h1 className="mb-16 text-6xl tracking-tight font-extrabold text-primary">
-            {!error ? 404 : error?.message || 'Something went wrong!'}
+          <h1 className="mb-8 text-2xl tracking-tight font-extrabold text-primary">
+            {!error ? 404 : 'Something went wrong!'}
           </h1>
 
-          <div role="alert" className="mb-8 alert alert-error">
+          <div role="alert" className="mb-8 alert alert-soft alert-error">
             <XIcon className="border-2 rounded-4xl h-6 w-6 shrink-0 stroke-current" />
-            <span className="text-lg font-light">
-              Error! Page not found. Check your link address and try again.
+            <span className="text-lg font-semibold">
+              {error
+                ? error?.message || 'Error!'
+                : 'Error! Page not found. Check your link address and try again.'}
             </span>
           </div>
 
