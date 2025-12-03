@@ -17,6 +17,7 @@
     "daisyui": "^5.4.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-error-boundary": "^6.0.0",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.9.5",
     "socket.io-client": "^4.8.1",
