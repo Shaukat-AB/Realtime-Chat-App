@@ -16,8 +16,8 @@ const Events = {
   EV_ONLINE_USERS: 'onlineUsers',
 };
 
-const onlineUsers = {};
-const getUserSocketId = (userId) => onlineUsers[userId];
+const onlineUsers = new Map();
+const getUserSocketId = (userId) => onlineUsers.get(userId);
 
 const io = new Server(server, {
   cors: {
@@ -29,16 +29,16 @@ io.on('connection', (socket) => {
   console.log('User connected socketId: ', socket.id);
 
   const userId = socket.handshake.query.userId;
-  if (userId) onlineUsers[userId] = socket.id;
+  if (userId) onlineUsers.set(userId, socket.id);
 
-  io.emit(Events.EV_ONLINE_USERS, Object.keys(onlineUsers));
+  io.emit(Events.EV_ONLINE_USERS, [...onlineUsers.keys()]);
 
   socket.on('disconnect', () => {
     console.log('User disconnected socketId: ', socket.id);
 
-    delete onlineUsers[userId];
+    onlineUsers.delete(userId);
 
-    io.emit(Events.EV_ONLINE_USERS, Object.keys(onlineUsers));
+    io.emit(Events.EV_ONLINE_USERS, [...onlineUsers.keys()]);
   });
 });
 
