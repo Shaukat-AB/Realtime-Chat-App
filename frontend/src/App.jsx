@@ -20,35 +20,38 @@ const App = () => {
   return (
     <>
       <NavBar />
-      {isLoading && !authUser && <LoadingSpinner />}
 
-      <ErrorBoundary FallbackComponent={ErrorPage}>
-        <Activity mode={isLoading && !authUser ? 'hidden' : 'visible'}>
-          <Routes>
-            <Route
-              index
-              element={authUser ? <HomePage /> : <Navigate to="/signin" />}
-            />
+      <main>
+        {isLoading && !authUser && <LoadingSpinner />}
 
-            <Route
-              path="/signup"
-              element={!authUser ? <SignupPage /> : <Navigate to="/" />}
-            />
+        <ErrorBoundary FallbackComponent={ErrorPage}>
+          <Activity mode={isLoading && !authUser ? 'hidden' : 'visible'}>
+            <Routes>
+              <Route
+                index
+                element={authUser ? <HomePage /> : <Navigate to="/signin" />}
+              />
 
-            <Route
-              path="/signin"
-              element={!authUser ? <SigninPage /> : <Navigate to="/" />}
-            />
+              <Route
+                path="/signup"
+                element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+              />
 
-            <Route
-              path="/profile"
-              element={authUser ? <ProfilePage /> : <Navigate to="/signin" />}
-            />
+              <Route
+                path="/signin"
+                element={!authUser ? <SigninPage /> : <Navigate to="/" />}
+              />
 
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </Activity>
-      </ErrorBoundary>
+              <Route
+                path="/profile"
+                element={authUser ? <ProfilePage /> : <Navigate to="/signin" />}
+              />
+
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </Activity>
+        </ErrorBoundary>
+      </main>
 
       <Toaster />
     </>
