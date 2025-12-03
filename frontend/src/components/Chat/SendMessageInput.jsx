@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { ImageIcon, SendIcon, XIcon } from '../../lib/icons';
 import { useSendMessage } from '../../hooks';
 
-const SendMessageInput = () => {
+const SendMessageInput = ({ disabled = false }) => {
   const [text, setText] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
@@ -34,6 +34,7 @@ const SendMessageInput = () => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
+
     if (!text.trim() && !imagePreview) return;
     mutate({
       text: text.trim(),
@@ -46,6 +47,7 @@ const SendMessageInput = () => {
 
   const removeImage = () => {
     setImagePreview(null);
+
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -59,11 +61,11 @@ const SendMessageInput = () => {
               alt="Preview"
               className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
             />
+
             <button
               onClick={removeImage}
               className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
               flex items-center justify-center"
-              type="button"
             >
               <XIcon className="w-3 h-3" />
             </button>
@@ -88,12 +90,13 @@ const SendMessageInput = () => {
             ref={fileInputRef}
             onChange={handleImageUpload}
           />
+
           <button
             type="button"
             className={`hidden sm:flex btn btn-circle
                      ${imagePreview ? 'text-emerald-500' : 'text-zinc-400'}`}
             onClick={() => fileInputRef.current?.click()}
-            disabled={isPending}
+            disabled={disabled || isPending}
           >
             <ImageIcon className="w-4 h-4" />
           </button>
@@ -102,7 +105,7 @@ const SendMessageInput = () => {
         <button
           type="submit"
           className="btn btn-sm btn-circle"
-          disabled={isPending || (!text.trim() && !imagePreview)}
+          disabled={disabled || isPending || (!text.trim() && !imagePreview)}
         >
           <SendIcon className="w-4 h-4" />
         </button>

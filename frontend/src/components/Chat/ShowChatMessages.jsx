@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Activity, useState } from 'react';
 import SendMessageInput from './SendMessageInput';
 import MessageSkeleton from '../Skeletons/MessageSkeleton';
 import ChatHeader from './ChatHeader';
@@ -37,37 +37,32 @@ const ShowChatMessages = () => {
     setSelectedMessages(updatedMessages);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex-1 flex flex-col overflow-auto">
-        <ChatHeader />
-        <MessageSkeleton />
-        <SendMessageInput />
-      </div>
-    );
-  }
-
   return (
     <div className="flex-1 flex flex-col overflow-auto">
       <ChatHeader
         cancelSelection={() => setSelectedMessages([])}
         onDeleteMessages={onDeleteMessages}
-        selectedCount={selectedMessages.length}
+        selectedCount={selectedMessages?.length}
       />
 
-      <ChatMessagesWrapper isLoading={isLoading}>
-        {currentMessages.map((msg) => (
-          <MessageCard
-            key={msg._id}
-            message={msg}
-            selected={(() => selectedMessages.some((m) => m._id === msg._id))()}
-            onSelected={() => onMessageSelected({ ...msg })}
-            selectedCount={selectedMessages.length}
-          />
-        ))}
-      </ChatMessagesWrapper>
+      {isLoading && <MessageSkeleton />}
 
-      <SendMessageInput />
+      <Activity mode={isLoading ? 'hidden' : 'visible'}>
+        <ChatMessagesWrapper isLoading={isLoading}>
+          {currentMessages?.map((msg) => (
+            <MessageCard
+              key={msg._id}
+              message={msg}
+              selected={(() =>
+                selectedMessages.some((m) => m._id === msg._id))()}
+              onSelected={() => onMessageSelected({ ...msg })}
+              selectedCount={selectedMessages.length}
+            />
+          ))}
+        </ChatMessagesWrapper>
+      </Activity>
+
+      <SendMessageInput disabled={isLoading} />
     </div>
   );
 };
