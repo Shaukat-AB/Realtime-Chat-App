@@ -1,13 +1,11 @@
 import User from '../models/user.model.js';
 import Message from '../models/message.model.js';
 import cloudinary from '../lib/cloudinary/cloudinary.js';
-import {
-  EV_DELETE_MESSAGE,
-  EV_NEW_MESSAGE,
-  getUserSocketId,
-  io,
-} from '../lib/socket/socket.js';
 import { newError } from '../lib/utils/utils.js';
+import {
+  eventDeleteMessage,
+  eventNewMessage,
+} from '../lib/socket/events/messageEvent.js';
 
 export const getUserContacts = async (req, res, next) => {
   try {
@@ -68,11 +66,7 @@ export const sendMessage = async (req, res, next) => {
 
     await newMessage.save();
 
-    //Emit event newMessage to receiver only
-    const receiverSocketId = getUserSocketId(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit(EV_NEW_MESSAGE, newMessage);
-    }
+    eventNewMessage(receiverId, newMessage);
 
     res.status(201).json(newMessage);
   } catch (err) {
@@ -90,24 +84,7 @@ export const hardDeleteMessagesById = async (req, res, next) => {
       throw newError('Invalid request body input', 400);
     }
 
-    //Emit event deleteMessage to receivers
-    const messages = await Message.find({
-      _id: { $in: messageIds },
-      senderId: deleterId,
-    });
-
-    ((messages = []) => {
-      if (!messages?.length) return;
-
-      const receiverIds = messages.map((msg) => msg.receiverId);
-      receiverIds.forEach((rId) => {
-        const deletedMsgs = messages
-          .filter((msg) => msg.receiverId.equals(rId))
-          .map((msg) => ({ _id: msg._id, image: '', temporary: true }));
-
-        io.to(getUserSocketId(rId)).emit(EV_DELETE_MESSAGE, deletedMsgs);
-      });
-    })(messages);
+    await eventDeleteMessage(deleterId, messageIds);
 
     const result = await Message.deleteMany({
       _id: { $in: messageIds },

@@ -10,9 +10,11 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN;
 const app = express();
 const server = http.createServer(app);
 
-const EV_DELETE_MESSAGE = 'deleteMessage';
-const EV_NEW_MESSAGE = 'newMessage';
-const EV_ONLINE_USERS = 'onlineUsers';
+const Events = {
+  EV_DELETE_MESSAGE: 'deleteMessage',
+  EV_NEW_MESSAGE: 'newMessage',
+  EV_ONLINE_USERS: 'onlineUsers',
+};
 
 const onlineUsers = {};
 const getUserSocketId = (userId) => onlineUsers[userId];
@@ -24,20 +26,20 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('Connected Id: ', socket.id);
+  console.log('User connected socketId: ', socket.id);
 
   const userId = socket.handshake.query.userId;
   if (userId) onlineUsers[userId] = socket.id;
 
-  io.emit(EV_ONLINE_USERS, Object.keys(onlineUsers));
+  io.emit(Events.EV_ONLINE_USERS, Object.keys(onlineUsers));
 
   socket.on('disconnect', () => {
-    console.log('Disconnected Id: ', socket.id);
+    console.log('User disconnected socketId: ', socket.id);
 
     delete onlineUsers[userId];
 
-    io.emit(EV_ONLINE_USERS, Object.keys(onlineUsers));
+    io.emit(Events.EV_ONLINE_USERS, Object.keys(onlineUsers));
   });
 });
 
-export { io, app, server, getUserSocketId, EV_NEW_MESSAGE, EV_DELETE_MESSAGE };
+export { io, app, server, getUserSocketId, Events };
