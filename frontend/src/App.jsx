@@ -11,52 +11,47 @@ import {
   SigninPage,
   SignupPage,
 } from './pages';
+import { Activity } from 'react';
 
 const App = () => {
   const { authUser } = useAuthStore();
   const { isLoading } = useVerifyAuth();
 
-  if (isLoading && !authUser) {
-    return (
-      <>
-        <NavBar />
-        <LoadingSpinner />
-      </>
-    );
-  }
-
   return (
-    <div>
+    <>
       <NavBar />
+      {isLoading && !authUser && <LoadingSpinner />}
 
       <ErrorBoundary FallbackComponent={ErrorPage}>
-        <Routes>
-          <Route
-            index
-            element={authUser ? <HomePage /> : <Navigate to="/signin" />}
-          />
+        <Activity mode={isLoading && !authUser ? 'hidden' : 'visible'}>
+          <Routes>
+            <Route
+              index
+              element={authUser ? <HomePage /> : <Navigate to="/signin" />}
+            />
 
-          <Route
-            path="/signup"
-            element={!authUser ? <SignupPage /> : <Navigate to="/" />}
-          />
+            <Route
+              path="/signup"
+              element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+            />
 
-          <Route
-            path="/signin"
-            element={!authUser ? <SigninPage /> : <Navigate to="/" />}
-          />
+            <Route
+              path="/signin"
+              element={!authUser ? <SigninPage /> : <Navigate to="/" />}
+            />
 
-          <Route
-            path="/profile"
-            element={authUser ? <ProfilePage /> : <Navigate to="/signin" />}
-          />
+            <Route
+              path="/profile"
+              element={authUser ? <ProfilePage /> : <Navigate to="/signin" />}
+            />
 
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Activity>
       </ErrorBoundary>
 
       <Toaster />
-    </div>
+    </>
   );
 };
 
