@@ -13,11 +13,14 @@ export const useRefScrollIntoView = (deps = []) => {
     },
     () => {
       // After all times
-      if (ref.current) {
-        ref.current.scrollIntoView({ behavior: 'smooth' });
-      }
+      const timer = setTimeout(() => {
+        if (ref.current) {
+          ref.current.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100); // delay the scroll action;
+      return () => clearTimeout(timer);
     },
-    [deps]
+    deps
   );
 
   return ref;
