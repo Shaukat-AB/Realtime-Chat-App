@@ -15,5 +15,7 @@ export const apiPath = {
   API_DELETE_MESSAGES: `${BASE_URL}/api/message/delete/`,
 };
 
+export { apiClient } from './apiClient';
+
 export * from './authApi';
 export * from './chatApi';

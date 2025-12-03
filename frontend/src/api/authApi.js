@@ -1,75 +1,21 @@
-import { apiPath } from '.';
+import { apiClient, apiPath } from '.';
 
 export const getVerifyAuth = async () => {
-  const res = await fetch(apiPath.API_VERIFY, {
-    method: 'GET',
-    credentials: 'include',
-  });
-
-  if (!res.ok) throw new Error('Error verifyAuth');
-  const parsed = await res.json();
-
-  return parsed;
+  return await apiClient.get(apiPath.API_VERIFY);
 };
 
 export const postSignup = async (data) => {
-  const res = await fetch(apiPath.API_SIGN_UP, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    credentials: 'include',
-  });
-
-  const parsed = await res.json();
-  if (!res.ok && !parsed?.message) throw new Error('Error Signup');
-
-  return parsed;
+  return await apiClient.post(apiPath.API_SIGN_UP, data);
 };
 
 export const postSignin = async (data) => {
-  const res = await fetch(apiPath.API_SIGN_IN, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    credentials: 'include',
-  });
-
-  const parsed = await res.json();
-  if (!res.ok && !parsed?.message) throw new Error('Error Signin');
-
-  return parsed;
+  return await apiClient.post(apiPath.API_SIGN_IN, data);
 };
 
 export const postSignout = async () => {
-  const res = await fetch(apiPath.API_SIGN_OUT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  });
-
-  if (!res.ok) throw new Error('Error Signout');
-
-  return true;
+  return await apiClient.post(apiPath.API_SIGN_OUT);
 };
 
 export const putUpdateProfile = async (data) => {
-  const res = await fetch(apiPath.API_UPDATE_PROFILE, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-    credentials: 'include',
-  });
-
-  const parsed = await res.json();
-  if (!res.ok && !parsed?.message) throw new Error('Error Signin');
-
-  return parsed;
+  return await apiClient.put(apiPath.API_UPDATE_PROFILE, data);
 };
