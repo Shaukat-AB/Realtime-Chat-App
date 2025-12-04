@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import { config } from 'dotenv';
 import { Server } from 'socket.io';
+import { eventUserTyping } from './events/userEvent.js';
 
 config();
 
@@ -14,6 +15,7 @@ const Events = {
   EV_DELETE_MESSAGE: 'deleteMessage',
   EV_NEW_MESSAGE: 'newMessage',
   EV_ONLINE_USERS: 'onlineUsers',
+  EV_USER_TYPING: 'userTyping',
 };
 
 const onlineUsers = new Map();
@@ -32,6 +34,8 @@ io.on('connection', (socket) => {
   if (userId) onlineUsers.set(userId, socket.id);
 
   io.emit(Events.EV_ONLINE_USERS, [...onlineUsers.keys()]);
+
+  eventUserTyping(socket);
 
   socket.on('disconnect', () => {
     console.log('User disconnected socketId: ', socket.id);

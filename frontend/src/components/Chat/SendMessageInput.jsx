@@ -2,11 +2,14 @@ import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { ImageIcon, SendIcon, XIcon } from '../../lib/icons';
 import { useSendMessage } from '../../hooks';
+import { useAuthStore } from '../../store';
 
 const SendMessageInput = ({ disabled = false }) => {
   const [text, setText] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
+
+  const { setIsTyping } = useAuthStore();
 
   const { mutate, isPending } = useSendMessage();
 
@@ -81,7 +84,10 @@ const SendMessageInput = ({ disabled = false }) => {
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
             placeholder="Type a message..."
             value={text}
+            onChange={(e) => setText(e.target.value)}
             autoFocus
+            onFocus={() => setIsTyping(true)}
+            onBlur={() => setIsTyping(false)}
           />
 
           <input

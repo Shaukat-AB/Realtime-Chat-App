@@ -17,6 +17,17 @@ export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
 
+  isTyping: false,
+  isContactTyping: false,
+
+  setIsTyping: (isTyping) => {
+    set({ isTyping: isTyping });
+    get().socket.emit(socketEvent.EV_USER_TYPING, {
+      _id: get().authUser._id,
+      isTyping,
+    });
+  },
+
   verifyAuth: async () => {
     const user = await getVerifyAuth();
 
@@ -103,5 +114,21 @@ export const useAuthStore = create((set, get) => ({
   disconnectSocket: () => {
     const { socket } = get();
     if (socket?.connected) socket.disconnect();
+  },
+
+  connectContactTyping: () => {
+    const { authUser, socket } = get();
+    if (!authUser) return;
+
+    socket.on(socketEvent.EV_USER_TYPING, (data) => {
+      if (useChatStore.getState().currentContact?._id === data._id) {
+        set({ isContactTyping: data.isTyping });
+      }
+    });
+  },
+
+  disconnectContactTyping: () => {
+    const { socket } = get();
+    socket.off(socketEvent.EV_USER_TYPING);
   },
 }));
