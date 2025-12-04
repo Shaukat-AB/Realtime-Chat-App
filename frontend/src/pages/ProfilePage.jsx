@@ -34,17 +34,21 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="pt-20 h-full bg-base-300">
+    <div className="pt-20 bg-base-200 h-full sm:h-screen">
       <title>Profile | Chat-App</title>
 
-      <div className="max-w-2xl mx-auto p-4 py-8">
-        <div className="bg-base-200 rounded-xl p-6 space-y-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold ">Profile</h1>
-            <p className="mt-2">Your profile information</p>
+      <div className="max-w-6xl mx-auto p-4 py-8">
+        <div className="bg-base-100 rounded-xl p-6 space-y-8 relative">
+          {/* Background */}
+          <div className="absolute left-0 top-0 w-full h-40 rounded-xl rounded-bl-none rounded-br-none bg-base-content"></div>
+
+          <div className="text-center relative">
+            <h1 className="text-2xl font-semibold text-base-100">
+              Profile Information
+            </h1>
           </div>
 
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 relative">
             <div className="relative">
               <Avatar
                 src={image || authUser.avatar}
@@ -72,45 +76,47 @@ const ProfilePage = () => {
                 />
               </label>
             </div>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-zinc-500">
               {isPending
                 ? 'Uploading...'
                 : 'Click the camera icon to update your photo'}
             </p>
           </div>
 
-          <div className="space-y-6">
-            <div className="space-y-1.5">
-              <div className="text-sm text-zinc-400 flex items-center gap-2">
-                <UserIcon className="w-4 h-4" />
-                Full Name
+          <div className="flex gap-4 md:gap-4 lg:gap-16 flex-col sm:flex-row">
+            <div className="flex-5 space-y-6">
+              <div className="space-y-1.5">
+                <div className="text-sm text-zinc-500 flex items-center gap-2">
+                  <UserIcon className="w-4 h-4" />
+                  Full Name
+                </div>
+                <p className="px-4 py-2.5 bg-base-100 rounded-lg border">
+                  {authUser?.fullname}
+                </p>
               </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.fullname}
-              </p>
+
+              <div className="space-y-1.5">
+                <div className="text-sm text-zinc-500 flex items-center gap-2">
+                  <MailIcon className="w-4 h-4" />
+                  Email Address
+                </div>
+                <p className="px-4 py-2.5 bg-base-100 rounded-lg border">
+                  {authUser?.email}
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-1.5">
-              <div className="text-sm text-zinc-400 flex items-center gap-2">
-                <MailIcon className="w-4 h-4" />
-                Email Address
-              </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.email}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 bg-base-300 rounded-xl p-6">
-            <h2 className="text-lg font-medium  mb-4">Account Information</h2>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center justify-between py-2 border-b border-zinc-700">
-                <span>Member Since</span>
-                <span>{authUser.createdAt?.split('T')[0]}</span>
-              </div>
-              <div className="flex items-center justify-between py-2">
-                <span>Account Status</span>
-                <span className="text-green-500">Active</span>
+            <div className="flex-3 mt-6 bg-base-200 rounded-xl p-6">
+              <h2 className="text-lg font-medium  mb-4">Account Information</h2>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between py-2 border-b border-zinc-700">
+                  <span>Member Since</span>
+                  <span>{authUser.createdAt?.split('T')[0]}</span>
+                </div>
+                <div className="flex items-center justify-between py-2">
+                  <span>Account Status</span>
+                  <span className="text-green-500">Active</span>
+                </div>
               </div>
             </div>
           </div>
