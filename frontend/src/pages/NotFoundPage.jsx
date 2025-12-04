@@ -1,37 +1,31 @@
 import { Link } from 'react-router-dom';
 import { XIcon } from '../lib/icons';
 
-const ErrorPage = ({ error = Error(), resetErrorBoundary = () => null }) => {
+const NotFoundPage = () => {
   return (
     <div className="pt-20 px-4 h-screen">
-      <title>Error | Chat-App</title>
+      <title>Page Not Found | Chat-App</title>
 
       <div className="h-4/5 flex items-center justify-center">
         <div className="mx-auto max-w-screen-sm text-center">
           <h1 className="mb-8 text-2xl tracking-tight font-extrabold text-primary">
-            Something went wrong!
+            '404 - Page Not Found!'
           </h1>
 
           <div role="alert" className="mb-8 alert alert-soft alert-error">
             <XIcon className="border-2 rounded-4xl h-6 w-6 shrink-0 stroke-current" />
             <span className="text-lg font-semibold">
-              {error?.message || 'Error!'}
+              Error! Page not found. Check your link address and try again.
             </span>
           </div>
 
-          <div className="flex items-center justify-center gap-8">
-            <button className="btn btn-secondary" onClick={resetErrorBoundary}>
-              Retry
-            </button>
-
-            <Link to="/" className="btn btn-soft btn-info">
-              Back to HomePage
-            </Link>
-          </div>
+          <Link to="/" className="btn btn-soft btn-info">
+            Back to HomePage
+          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default ErrorPage;
+export default NotFoundPage;

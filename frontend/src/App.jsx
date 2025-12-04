@@ -7,6 +7,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import {
   ErrorPage,
   HomePage,
+  NotFoundPage,
   ProfilePage,
   SigninPage,
   SignupPage,
@@ -47,7 +48,7 @@ const App = () => {
                 element={authUser ? <ProfilePage /> : <Navigate to="/signin" />}
               />
 
-              <Route path="*" element={<ErrorPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Activity>
         </ErrorBoundary>
