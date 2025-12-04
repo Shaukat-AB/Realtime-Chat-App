@@ -106,16 +106,16 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            <div className="flex-3 mt-6 bg-base-200 rounded-xl p-6">
+            <div className="flex-3 mt-6 bg-base-200 rounded-xl p-6 text-zinc-900">
               <h2 className="text-lg font-medium  mb-4">Account Information</h2>
               <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between py-2 border-b border-zinc-700">
+                <div className="flex items-center justify-between py-2 border-b border-zinc-400">
                   <span>Member Since</span>
                   <span>{authUser.createdAt?.split('T')[0]}</span>
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <span>Account Status</span>
-                  <span className="text-green-500">Active</span>
+                  <span className="text-green-900">Active</span>
                 </div>
               </div>
             </div>

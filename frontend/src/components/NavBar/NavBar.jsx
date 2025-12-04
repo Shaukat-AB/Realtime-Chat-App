@@ -36,7 +36,11 @@ const NavBar = () => {
 
             {authUser && (
               <>
-                <Link to={'/profile'} className={`btn btn-sm gap-2`}>
+                <Link
+                  to={'/profile'}
+                  className={`btn btn-sm gap-2`}
+                  aria-label="Profile"
+                >
                   <UserIcon className="w-5 h-5" />
                   <span className="hidden sm:inline">Profile</span>
                 </Link>
@@ -44,9 +48,10 @@ const NavBar = () => {
                 <button
                   className="btn btn-sm flex gap-2 items-center"
                   onClick={handleSignOut}
+                  aria-label="Sign out"
                 >
                   <SignoutIcon className="w-5 h-5" />
-                  <span className="hidden sm:inline">Signout</span>
+                  <span className="hidden sm:inline">Sign out</span>
                 </button>
               </>
             )}

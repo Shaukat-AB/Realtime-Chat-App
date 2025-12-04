@@ -30,6 +30,7 @@ const ThemeDropdown = () => {
         className={`
               btn btn-sm gap-2 transition-colors
               `}
+        aria-label="Change Theme"
       >
         <ThemeColoredSquares />
         <span className="hidden sm:inline">Theme</span>
