@@ -8,7 +8,7 @@ import MessageInputImagePreview from './MessageInputImagePreview';
 
 const SendMessageInput = ({ disabled = false }) => {
   const [text, setText] = useState('');
-  const [imagePreview, setImagePreview] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
 
   const { setIsTyping } = useAuthStore();

@@ -1,7 +1,7 @@
 import { XIcon } from '../../lib/icons';
 
 const MessageInputImagePreview = ({
-  imagePreview = '',
+  imagePreview = null,
   removeImage = () => null,
 }) => {
   return (

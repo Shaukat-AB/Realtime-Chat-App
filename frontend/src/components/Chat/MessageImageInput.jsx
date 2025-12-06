@@ -5,7 +5,7 @@ const MessageImageInput = ({
   fileInputRef,
   isImagePreviewed = false,
   disabled = false,
-  onImageUpload = (_src = '') => null,
+  onImageUpload = (_src) => null,
   removeImage = () => null,
 }) => {
   const handleImageUpload = (e) => {
