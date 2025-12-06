@@ -1,13 +1,14 @@
-import { useRef, useState } from 'react';
-import toast from 'react-hot-toast';
+import { Activity, useRef, useState } from 'react';
 import { useSendMessage } from '../../hooks';
 import { useAuthStore } from '../../store';
-import { ImageIcon, SendIcon, XIcon } from '../../lib/icons';
+import { SendIcon } from '../../lib/icons';
 import EmojiSelecter from './EmojiSelecter';
+import MessageImageInput from './MessageImageInput';
+import MessageInputImagePreview from './MessageInputImagePreview';
 
 const SendMessageInput = ({ disabled = false }) => {
   const [text, setText] = useState('');
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
   const fileInputRef = useRef(null);
 
   const { setIsTyping } = useAuthStore();
@@ -15,28 +16,6 @@ const SendMessageInput = ({ disabled = false }) => {
   const { mutate, isPending } = useSendMessage();
 
   const handleEmojiClick = (emojiData) => setText(emojiData.emoji);
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
-      return;
-    }
-
-    const maxSize = 1 * 1024 * 1024; //bytes
-    if (file.size > maxSize) {
-      removeImage();
-      toast.error('Image size exceeds the 1MB limit');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = (revent) => {
-      const result = revent.target.result;
-      setImagePreview(result);
-    };
-  };
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -59,25 +38,12 @@ const SendMessageInput = ({ disabled = false }) => {
 
   return (
     <div className="p-4 w-full">
-      {imagePreview && (
-        <div className="mb-3 flex items-center gap-2">
-          <div className="relative">
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
-            />
-
-            <button
-              onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
-            >
-              <XIcon className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
-      )}
+      <Activity mode={imagePreview ? 'visible' : 'hidden'}>
+        <MessageInputImagePreview
+          imagePreview={imagePreview}
+          removeImage={removeImage}
+        />
+      </Activity>
 
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2 input input-sm sm:input-md px-0 rounded-lg relative">
@@ -95,23 +61,13 @@ const SendMessageInput = ({ disabled = false }) => {
             onBlur={() => setIsTyping(false)}
           />
 
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-          />
-
-          <button
-            type="button"
-            className={`btn btn-circle bg-transparent border-0
-                     ${imagePreview ? 'text-emerald-500' : 'text-zinc-500'}`}
-            onClick={() => fileInputRef.current?.click()}
+          <MessageImageInput
+            fileInputRef={fileInputRef}
+            onImageUpload={(src) => setImagePreview(src)}
+            removeImage={removeImage}
+            isImagePreviewed={!!imagePreview}
             disabled={disabled || isPending}
-          >
-            <ImageIcon className="size-5 md:size-6" />
-          </button>
+          />
         </div>
 
         <button
