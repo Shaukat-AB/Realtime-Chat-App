@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { ChatSquareIcon, DeleteIcon, XIcon } from '../../lib/icons';
 import { useAuthStore, useChatStore } from '../../store';
 import Avatar from '../Avatar/Avatar';
@@ -9,22 +8,12 @@ const ChatHeader = ({
   cancelSelection = () => null,
 }) => {
   const { currentContact, setCurrentContact } = useChatStore();
-  const {
-    onlineUsers,
-    isContactTyping,
-    connectContactTyping,
-    disconnectContactTyping,
-  } = useAuthStore();
+  const { onlineUsers, isContactTyping } = useAuthStore();
 
-  const handleDelete = (e) => {
+  const handleDelete = (_e) => {
     if (!selectedCount) return;
     onDeleteMessages();
   };
-
-  useEffect(() => {
-    connectContactTyping();
-    return () => disconnectContactTyping();
-  }, [currentContact._id]);
 
   return (
     <div className="p-2.5 border-b border-base-300">

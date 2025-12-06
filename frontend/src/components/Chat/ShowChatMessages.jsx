@@ -4,6 +4,7 @@ import MessageSkeleton from '../Skeletons/MessageSkeleton';
 import ChatHeader from './ChatHeader';
 import {
   useChatConnect,
+  useContactTypingConnect,
   useGetMessages,
   useSoftHardDelMessages,
 } from '../../hooks';
@@ -14,6 +15,7 @@ import { useChatStore } from '../../store';
 
 const ShowChatMessages = () => {
   useChatConnect();
+  useContactTypingConnect();
 
   const { currentMessages: tempMessages } = useChatStore();
   const { data, isLoading } = useGetMessages();

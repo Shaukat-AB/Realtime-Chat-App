@@ -1,6 +1,8 @@
 export { useRefScrollIntoView } from './useRefScrollIntoView';
 export { useSoftHardDelMessages } from './useSoftHardDelMessages';
+
 export { useChatConnect } from './useChatConnect';
+export { useContactTypingConnect } from './useContactTypingConnect';
 
 //Queries
 export { useVerifyAuth } from './queries/useVerifyAuth';
