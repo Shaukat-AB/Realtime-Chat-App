@@ -15,6 +15,7 @@ import {
   XMarkIcon,
   TrashIcon,
   NoSymbolIcon,
+  FaceSmileIcon,
 } from '@heroicons/react/24/outline';
 
 export const ChatSquareIcon = ChatBubbleLeftIcon;
@@ -32,4 +33,5 @@ export const ImageIcon = PhotoIcon;
 export const XIcon = XMarkIcon;
 export const DeleteIcon = TrashIcon;
 export const NoMessageIcon = NoSymbolIcon;
+export const EmojiIcon = FaceSmileIcon;
 // export const SettingsIcon = Cog6ToothIcon;

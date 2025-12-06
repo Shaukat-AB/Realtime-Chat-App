@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { ImageIcon, SendIcon, XIcon } from '../../lib/icons';
 import { useSendMessage } from '../../hooks';
 import { useAuthStore } from '../../store';
+import { ImageIcon, SendIcon, XIcon } from '../../lib/icons';
+import EmojiSelecter from './EmojiSelecter';
 
 const SendMessageInput = ({ disabled = false }) => {
   const [text, setText] = useState('');
@@ -12,6 +13,8 @@ const SendMessageInput = ({ disabled = false }) => {
   const { setIsTyping } = useAuthStore();
 
   const { mutate, isPending } = useSendMessage();
+
+  const handleEmojiClick = (emojiData) => setText(emojiData.emoji);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -77,11 +80,13 @@ const SendMessageInput = ({ disabled = false }) => {
       )}
 
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
+        <div className="flex-1 flex gap-2 input input-sm sm:input-md px-0 rounded-lg relative">
+          <EmojiSelecter onEmojiClick={handleEmojiClick} />
+
           <input
             name="message"
             type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
+            className="w-full"
             placeholder="Type a message..."
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -100,21 +105,21 @@ const SendMessageInput = ({ disabled = false }) => {
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle
-                     ${imagePreview ? 'text-emerald-500' : 'text-zinc-400'}`}
+            className={`btn btn-circle bg-transparent border-0
+                     ${imagePreview ? 'text-emerald-500' : 'text-zinc-500'}`}
             onClick={() => fileInputRef.current?.click()}
             disabled={disabled || isPending}
           >
-            <ImageIcon className="w-4 h-4" />
+            <ImageIcon className="size-5 md:size-6" />
           </button>
         </div>
 
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="mx-4 ml-1 sm:mx-5 sm:ml-1 btn btn-md btn-circle"
           disabled={disabled || isPending || (!text.trim() && !imagePreview)}
         >
-          <SendIcon className="w-4 h-4" />
+          <SendIcon className="size-6" />
         </button>
       </form>
     </div>

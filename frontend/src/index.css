@@ -3,3 +3,14 @@
   themes: fantasy --default, night --prefersdark, light, dark, retro, cyberpunk,
     valentine, synthwave, aqua, luxury;
 }
+
+/* Emoji-Picker */
+#emoji-picker * {
+  --epr-bg-color: var(--color-base-100);
+  --epr-search-input-bg-color: var(--color-base-100);
+  --epr-hover-bg-color: var(--color-base-content);
+  --epr-emoji-hover-color: var(--color-accent-content);
+  --epr-category-label-bg-color: var(--color-base-200);
+  --epr-category-label-text-color: var(--color-neutral-500);
+  --epr-text-color: var(--color-base-content);
+}
