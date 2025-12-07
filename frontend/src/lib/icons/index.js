@@ -3,12 +3,12 @@ import {
   ChatBubbleLeftIcon,
   EyeIcon,
   EyeSlashIcon,
-  UserIcon as UIcon,
-  UsersIcon as UsersI,
+  UserIcon as HUserIcon,
+  UsersIcon as HUsersIcon,
   LockClosedIcon,
   EnvelopeIcon,
   ArrowRightStartOnRectangleIcon,
-  CameraIcon as CIcon,
+  CameraIcon as HCameraIcon,
   ChevronDownIcon,
   PaperAirplaneIcon,
   PhotoIcon,
@@ -18,16 +18,17 @@ import {
   FaceSmileIcon,
   CheckIcon as HCheckIcon,
 } from '@heroicons/react/24/outline';
+import { memo } from 'react';
 
 export const ChatSquareIcon = ChatBubbleLeftIcon;
-export const EyeOnIcon = EyeIcon;
-export const EyeOffIcon = EyeSlashIcon;
-export const UserIcon = UIcon;
-export const UsersIcon = UsersI;
-export const LockIcon = LockClosedIcon;
-export const MailIcon = EnvelopeIcon;
+export const EyeOnIcon = memo(EyeIcon);
+export const EyeOffIcon = memo(EyeSlashIcon);
+export const UserIcon = memo(HUserIcon);
+export const LockIcon = memo(LockClosedIcon);
+export const MailIcon = memo(EnvelopeIcon);
+export const UsersIcon = memo(HUsersIcon);
 export const SignoutIcon = ArrowRightStartOnRectangleIcon;
-export const CameraIcon = CIcon;
+export const CameraIcon = HCameraIcon;
 export const BtnArrowDownIcon = ChevronDownIcon;
 export const SendIcon = PaperAirplaneIcon;
 export const ImageIcon = PhotoIcon;
