@@ -83,8 +83,8 @@ const ProfilePage = () => {
             </p>
           </div>
 
-          <div className="flex gap-4 md:gap-4 lg:gap-16 flex-col sm:flex-row">
-            <div className="flex-5 space-y-6">
+          <div className="flex gap-4 sm:gap-8 lg:gap-16 flex-col sm:flex-row">
+            <div className="flex-5 space-y-6 lg:px-6">
               <div className="space-y-1.5">
                 <div className="text-sm text-zinc-500 flex items-center gap-2">
                   <UserIcon className="w-4 h-4" />
@@ -106,16 +106,16 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            <div className="flex-3 mt-6 bg-base-200 rounded-xl p-6 text-zinc-900">
+            <div className="flex-3 mt-6 lg:px-6 bg-base-100 rounded-xl text-base-content/80">
               <h2 className="text-lg font-medium  mb-4">Account Information</h2>
               <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between py-2 border-b border-zinc-400">
+                <div className="flex items-center justify-between py-2 border-b">
                   <span>Member Since</span>
                   <span>{authUser.createdAt?.split('T')[0]}</span>
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <span>Account Status</span>
-                  <span className="text-green-900">Active</span>
+                  <span className="text-success">Active</span>
                 </div>
               </div>
             </div>
