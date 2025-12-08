@@ -72,7 +72,7 @@ const SendMessageInput = ({ disabled = false }) => {
 
         <button
           type="submit"
-          className="mx-4 ml-1 sm:mx-5 sm:ml-1 btn btn-md btn-circle"
+          className="sm:mr-5 sm:ml-1 btn btn-md btn-circle"
           disabled={disabled || isPending || (!text.trim() && !imagePreview)}
         >
           <SendIcon className="size-6" />
