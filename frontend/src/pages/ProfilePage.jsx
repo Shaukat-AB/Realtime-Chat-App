@@ -34,11 +34,11 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="pt-20 bg-base-200 h-full sm:h-screen">
+    <div className="pt-20 bg-base-200 sm:h-screen">
       <title>Profile | Chat-App</title>
 
       <div className="max-w-6xl mx-auto p-4 py-8">
-        <div className="bg-base-100 rounded-xl p-6 space-y-8 relative">
+        <div className="aspect-video bg-base-100 rounded-xl p-6 space-y-8 relative">
           {/* Background */}
           <div className="absolute left-0 top-0 w-full h-40 rounded-xl rounded-bl-none rounded-br-none bg-base-content"></div>
 
