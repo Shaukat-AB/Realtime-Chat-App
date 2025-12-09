@@ -131,4 +131,34 @@ export const useAuthStore = create((set, get) => ({
     const { socket } = get();
     socket.off(socketEvent.EV_USER_TYPING);
   },
+
+  connectContactLastSeen: () => {
+    const { authUser, socket } = get();
+    if (!authUser) return;
+
+    socket.on(socketEvent.EV_USER_STATUS, (user) => {
+      const contact = useChatStore
+        .getState()
+        .contacts.find((u) => u._id === user._id);
+
+      if (!contact) return;
+
+      contact.lastSeen = user.lastSeen;
+      const newContacts = useChatStore.getState().contacts.map((u) => {
+        if (u._id == contact._id) return contact;
+        return u;
+      });
+
+      useChatStore.setState({ contacts: newContacts });
+
+      if (contact._id === useChatStore.getState().currentContact?._id) {
+        useChatStore.getState().setCurrentContact({ ...contact });
+      }
+    });
+  },
+
+  disconnectContactLastSeen: () => {
+    const { socket } = get();
+    socket.off(socketEvent.EV_USER_STATUS);
+  },
 }));

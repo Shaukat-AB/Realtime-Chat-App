@@ -3,12 +3,15 @@ import { useAuthStore, useChatStore } from '../../store';
 import { UsersIcon } from '../../lib/icons';
 import SidebarSkeleton from '../Skeletons/SidebarSkeleton';
 import Avatar from '../Avatar/Avatar';
-import { useGetContacts } from '../../hooks';
+import { useContactLastSeenConnect, useGetContacts } from '../../hooks';
+import { lastSeenText } from '../../lib/utils';
 
 const Sidebar = () => {
   const { onlineUsers } = useAuthStore();
   const { currentContact, contacts, setCurrentContact } = useChatStore();
   const { isLoading } = useGetContacts();
+
+  useContactLastSeenConnect();
 
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
@@ -74,8 +77,12 @@ const Sidebar = () => {
             {/* User info - (larger screens only) */}
             <div className="hidden lg:block text-left min-w-0">
               <div className="font-medium truncate">{user.fullname}</div>
-              <div className="text-sm text-zinc-400">
-                {onlineUsers.includes(user._id) ? 'Online' : 'Offline'}
+              <div className="text-sm text-zinc-400 whitespace-nowrap overflow-hidden">
+                <p>
+                  {onlineUsers.includes(user._id)
+                    ? 'Online'
+                    : lastSeenText(user) || 'Offline'}
+                </p>
               </div>
             </div>
           </button>

@@ -1,5 +1,6 @@
-import { ChatSquareIcon, DeleteIcon, XIcon } from '../../lib/icons';
 import { useAuthStore, useChatStore } from '../../store';
+import { ChatSquareIcon, DeleteIcon, XIcon } from '../../lib/icons';
+import { lastSeenText } from '../../lib/utils';
 import Avatar from '../Avatar/Avatar';
 
 const ChatHeader = ({
@@ -30,12 +31,12 @@ const ChatHeader = ({
 
           <div>
             <h3 className="font-medium">{currentContact.fullname}</h3>
-            <p className="text-sm text-base-content/70">
+            <p className="text-sm text-base-content/70 whitespace-nowrap overflow-hidden">
               {isContactTyping
                 ? 'typing ...'
                 : onlineUsers.includes(currentContact._id)
                 ? 'Online'
-                : 'Offline'}
+                : lastSeenText(currentContact) || 'Offline'}
             </p>
           </div>
         </div>

@@ -3,6 +3,7 @@ export { useSoftHardDelMessages } from './useSoftHardDelMessages';
 
 export { useChatConnect } from './useChatConnect';
 export { useContactTypingConnect } from './useContactTypingConnect';
+export { useContactLastSeenConnect } from './useContactLastSeenConnect';
 
 //Queries
 export { useVerifyAuth } from './queries/useVerifyAuth';
