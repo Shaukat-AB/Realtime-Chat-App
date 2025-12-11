@@ -32,47 +32,52 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <title>Signup | Chat-App</title>
+    <div className="flex justify-center min-h-screen pt-20 pb-4 px-4">
+      <div className="py-6 bg-base-100 rounded-lg shadow-cl w-full max-w-sm md:max-w-md h-auto">
+        <title>Signup | Chat-App</title>
 
-      <div className="w-full flex flex-col justify-center items-center py-6 sm:py-12">
-        <div className="w-full max-w-sm space-y-8 md:max-w-md">
-          <FormTitleWithIconText
-            title="Create Account"
-            text="Get started with your free account"
-          />
+        <div className="w-full flex flex-col justify-center items-center px-6 sm:px-12">
+          <div className="w-full max-w-sm space-y-8 md:max-w-md">
+            <FormTitleWithIconText
+              title="Create Account"
+              text="Get started with your free account"
+            />
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Full Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 top-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <UserIcon className="w-5 h-5 text-base-content/40 z-4" />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">Full Name</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 top-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <UserIcon className="w-5 h-5 text-base-content/40 z-4" />
+                  </div>
+                  <input
+                    type="text"
+                    name="fullname"
+                    className={`input input-bordered w-full pl-10`}
+                    placeholder="your name"
+                    value={formData.fullname}
+                    onChange={handleChange}
+                  />
                 </div>
-                <input
-                  type="text"
-                  name="fullname"
-                  className={`input input-bordered w-full pl-10`}
-                  placeholder="your name"
-                  value={formData.fullname}
-                  onChange={handleChange}
-                />
               </div>
-            </div>
 
-            <EmailInput value={formData.email} onChange={handleChange} />
-            <PasswordInput value={formData.password} onChange={handleChange} />
+              <EmailInput value={formData.email} onChange={handleChange} />
+              <PasswordInput
+                value={formData.password}
+                onChange={handleChange}
+              />
 
-            <SubmitBtnWithLoading title="Sign up" isLoading={isPending} />
-          </form>
+              <SubmitBtnWithLoading title="Sign up" isLoading={isPending} />
+            </form>
 
-          <FormEndLink
-            to="/signin"
-            title="Sign in"
-            text="Already have an account?"
-          />
+            <FormEndLink
+              to="/signin"
+              title="Sign in"
+              text="Already have an account?"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -31,28 +31,33 @@ const SigninPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <title>Signin | Chat-App</title>
+    <div className="flex justify-center min-h-screen pt-20 px-4">
+      <div className="py-6 bg-base-100 rounded-lg shadow-cl w-full max-w-sm md:max-w-md h-[calc(100vh-8rem)]">
+        <title>Signin | Chat-App</title>
 
-      <div className="w-full flex flex-col justify-center items-center px-6 sm:px-12">
-        <div className="w-full max-w-sm space-y-8 md:max-w-md">
-          <FormTitleWithIconText
-            title="Welcome Back"
-            text="Sign in to your account"
-          />
+        <div className="w-full flex flex-col justify-center items-center px-6 sm:px-12">
+          <div className="w-full max-w-sm space-y-8 md:max-w-md">
+            <FormTitleWithIconText
+              title="Welcome Back"
+              text="Sign in to your account"
+            />
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <EmailInput value={formData.email} onChange={handleChange} />
-            <PasswordInput value={formData.password} onChange={handleChange} />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <EmailInput value={formData.email} onChange={handleChange} />
+              <PasswordInput
+                value={formData.password}
+                onChange={handleChange}
+              />
 
-            <SubmitBtnWithLoading title="Sign In" isLoading={isPending} />
-          </form>
+              <SubmitBtnWithLoading title="Sign In" isLoading={isPending} />
+            </form>
 
-          <FormEndLink
-            to="/signup"
-            title="Sign up"
-            text="Don't have an account?"
-          />
+            <FormEndLink
+              to="/signup"
+              title="Sign up"
+              text="Don't have an account?"
+            />
+          </div>
         </div>
       </div>
     </div>

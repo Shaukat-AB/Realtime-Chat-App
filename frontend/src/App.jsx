@@ -22,7 +22,7 @@ const App = () => {
     <>
       <NavBar />
 
-      <main>
+      <main className="bg-base-200">
         {isLoading && !authUser && <LoadingSpinner />}
 
         <ErrorBoundary FallbackComponent={ErrorPage}>
