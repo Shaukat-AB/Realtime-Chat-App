@@ -8,6 +8,7 @@ const themeStorage = newStorage(themeLocalStorageKey, 'default');
 
 const themes = [
   'default',
+  'night',
   'light',
   'dark',
   'retro',
